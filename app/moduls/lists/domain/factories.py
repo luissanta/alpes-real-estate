@@ -27,9 +27,10 @@ class _FabricaListado(Factory):
 
 @dataclass
 class ListFactory(Factory):
-    def create_object(self, obj: type, mapper: any = None) -> any:
-        if mapper.get_type() == Estate.__class__:
+    def create_object(self, obj: any, mapper: any = None) -> any:
+        if isinstance(obj,Entity):
             fabrica_reserva = _FabricaListado()
             return fabrica_reserva.build_object(obj, mapper)
         else:
+            print("entro por aqui")
             raise ObjectTypeNotExistInEstatesDomainException()
