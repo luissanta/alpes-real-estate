@@ -6,12 +6,15 @@ encargados de la transformación entre formatos de dominio y DTOs
 """
 
 from app.seedwork.domain.repositories import Mapper
-from app.moduls.lists.domain.value_objects import NombreAero, Odo, Leg, Segmento, Itinerario, CodigoIATA
+from app.moduls.lists.domain.value_objects import Name, Code
 from app.moduls.lists.domain.entities import Estate, EstateList
 from ..infrastructure.dto import Estate as EstateDTO
 
 
 class MapperListEstates(Mapper):
+    def get_type(self) -> type:
+        return Estate.__class__
+        pass
 
     def _create_estate_dto(self, dto: EstateDTO) -> Estate:
         estate = Estate(code=dto.code, name=dto.name)

@@ -20,7 +20,6 @@ class ListService(Service):
     def list_factory(self):
         return self._list_factories
 
-    def get_list_by_id(self) -> ListDTO:
-        repository = self.repository_factory.create_object(
-            MapperListEstates)
-        return repository.get_all()
+    def get_list_entities(self) -> ListDTO:
+        repository = self.repository_factory.create_object(ListRepository.__class__)
+        return self.list_factory.create_object(repository.get_all() ,MapperListEstates) 
