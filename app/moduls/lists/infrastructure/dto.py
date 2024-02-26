@@ -8,8 +8,8 @@ from app.config.db import Base, engine
 from sqlalchemy import Column, String
 
 
-class Listado(Base):
-    __tablename__ = "list"
+class Estate(Base):
+    __tablename__ = "estatelist"
     id = Column(String, primary_key=True)
     code = Column(String, nullable=False)
     name = Column(String, nullable=False)

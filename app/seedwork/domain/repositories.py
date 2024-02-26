@@ -42,3 +42,5 @@ class Mapper(ABC):
     @abstractmethod
     def dto_to_entity(self, dto: any) -> Entity:
         ...
+
+

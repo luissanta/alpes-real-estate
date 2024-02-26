@@ -16,7 +16,10 @@ class Estate(Entity):
 
 
 @dataclass
-class List(RootAggregation):
+class EstateList(RootAggregation):
     estate_id: int = field(hash=True, default=None)
-    code: ov.Code = field(default_factory=ov.Code)
-    name: ov.Name = field(default_factory=ov.Name)
+    estates: list[Estate] = field(default_factory=list)
+
+    
+  
+
