@@ -12,6 +12,3 @@ async def get_list():
     map_estates = MapApp()
     sr = ListService()
     return map_estates.dto_to_external(sr.get_list_entities())
-
-
- 

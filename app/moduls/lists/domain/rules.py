@@ -15,7 +15,7 @@ class EstateMinOne(BusinessRule):
         super().__init__(mensaje)
         self.estates = estates
 
-    def es_valido(self) -> bool:
+    def is_valid(self) -> bool:
         for estates in self.estates:
             if estates.code == Estate.code:
                 return True

@@ -5,33 +5,31 @@ objetos complejos del dominio de lists
 """
 
 from app.moduls.lists.domain.exceptions import ObjectTypeNotExistInEstatesDomainException
-from app.moduls.lists.domain.rules import EstateMinOne
 from app.seedwork.domain.repositories import Mapper
 from app.seedwork.domain.factories import Factory
 from .entities import Estate, Entity
 from dataclasses import dataclass
 
 
-
 @dataclass
 class _FabricaListado(Factory):
-    def crear_objeto(self, obj: any, mapper: Mapper) -> any:
+    def create_object(self, obj: any, mapper: Mapper = None) -> any:
         if isinstance(obj, Entity):
-            return mapper.entity_to__dto(obj)
+            return mapper.entity_to_dto(obj)
         else:
-            reserva: list = mapper.dto_to_entity(obj)
+            estate_list: Estate = mapper.dto_to_entity(obj)
 
-            self.validate_rule(EstateMinOne(Estate.code))
+            # self.validate_rule(EstateMinOne(Estate))
 
-            return reserva
+            return estate_list
 
 
 @dataclass
 class ListFactory(Factory):
-    def create_object(self, obj: type, mapper: Mapper = None) -> any:
-        if mapper.get_type(self) == Estate.__class__:
+    def create_object(self, obj: any, mapper: Mapper = None) -> any:
+        if mapper.get_type() == Estate.__class__:
             fabrica_reserva = _FabricaListado()
             return fabrica_reserva.create_object(obj, mapper)
         else:
-            print("entro por aqui")
             raise ObjectTypeNotExistInEstatesDomainException()
+

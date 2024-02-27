@@ -22,4 +22,4 @@ class ListService(Service):
 
     def get_list_entities(self) -> ListDTO:
         repository = self.repository_factory.create_object(ListRepository.__class__)
-        return self.list_factory.create_object(repository.get_all() ,MapperListEstates) 
+        return self.list_factory.create_object(repository.get_all(), MapperListEstates())

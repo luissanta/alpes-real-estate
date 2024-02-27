@@ -6,7 +6,7 @@ reusables parte del seedwork del proyecto
 
 from abc import ABC, abstractmethod
 from .entities import Entity
-from typing import Type, Any
+from typing import Any
 
 
 class Repository(ABC):
@@ -34,7 +34,7 @@ class Repository(ABC):
 class Mapper(ABC):
 
     @abstractmethod
-    def get_type(self) -> Type:
+    def get_type(self) -> type:
         ...
 
     @abstractmethod
@@ -42,7 +42,7 @@ class Mapper(ABC):
         ...
 
     @abstractmethod
-    def dto_to_entity(self, dto: Any) -> Entity:
+    def dto_to_entity(self, dto: any) -> Entity:
         ...
 
     @abstractmethod
