@@ -8,7 +8,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 from app.seedwork.domain.repositories import Mapper
 from app.moduls.lists.domain.value_objects import Name, Code
 from app.moduls.lists.domain.entities import Estate, EstateList
-from ..infrastructure.dto import Estate as EstateDTO
+from .dto import EstateDTO
 
 
 class MapperListEstates(Mapper):
@@ -32,6 +32,9 @@ class MapperListEstates(Mapper):
         estate_list = EstateList(estate_id=dto.id)
         estate_list.estates.extend(self._create_lists_estate_dto([estate]))
         return estate_list
+
+    def dto_to_external(self, dto: EstateDTO) -> dict:
+        return dto.__dict__   
 
     def entity_to_dto(self, estate: Estate) -> EstateDTO:
         return self._create_estate_dto(estate)

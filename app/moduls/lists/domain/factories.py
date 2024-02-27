@@ -7,9 +7,10 @@ objetos complejos del dominio de lists
 from app.moduls.lists.domain.exceptions import ObjectTypeNotExistInEstatesDomainException
 from app.moduls.lists.domain.rules import EstateMinOne
 from app.seedwork.domain.repositories import Mapper
+from app.seedwork.domain.factories import Factory
 from .entities import Estate, Entity
 from dataclasses import dataclass
-from app.seedwork.domain.factories import Factory
+
 
 
 @dataclass
@@ -27,9 +28,9 @@ class _FabricaListado(Factory):
 
 @dataclass
 class ListFactory(Factory):
-    def create_object(self, obj: type, mapper: any = None) -> any:
-        if mapper.get_type() == Estate.__class__:
+    def create_object(self, obj: type, mapper: Mapper = None) -> any:
+        if mapper.get_type(self) == Estate.__class__:
             fabrica_reserva = _FabricaListado()
-            return fabrica_reserva.build_object(obj, mapper)
+            return fabrica_reserva.create_object(obj, mapper)
         else:
             raise ObjectTypeNotExistInEstatesDomainException()
