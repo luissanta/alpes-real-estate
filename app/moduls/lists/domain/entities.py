@@ -1,6 +1,6 @@
 """Entidades del dominio de lists
 
-En este archivo usted encontrará las entidades del dominio de vuelos
+En este archivo usted encontrará las entidades del dominio de lists
 """
 
 from __future__ import annotations
@@ -11,12 +11,11 @@ from app.seedwork.domain.entities import Entity, RootAggregation
 
 @dataclass
 class Estate(Entity):
-    code: ov.Code = field(default_factory=ov.Code)
-    name: ov.Name = field(default_factory=ov.Name)
-
+    id: int = field(default=None)
+    code: str = field(default_factory=str)
+    name: str = field(default_factory=str)
 
 @dataclass
 class List(RootAggregation):
     estate_id: int = field(hash=True, default=None)
-    code: ov.Code = field(default_factory=ov.Code)
-    name: ov.Name = field(default_factory=ov.Name)
+    estates: list[Estate] = field(default_factory=list)

@@ -29,7 +29,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=6565
-      - POSTGRES_DB=alpes_real_estate
+      - POSTGRES_DB=estates_alpes_real_estate
     networks:
       internal_net:
         aliases:

@@ -19,8 +19,8 @@ logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(name)s - %(leve
 logger = logging.getLogger(__name__)
 
 api_v1_auth = APIRouter(prefix='/api/v1/auth')
-api_v1_auth.include_router(api.auth_router)
 app.include_router(api.health_check_router)
+app.include_router(api.list_router)
 app.include_router(api_v1_auth)
 
 app_test = app
