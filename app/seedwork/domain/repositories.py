@@ -5,7 +5,6 @@ reusables parte del seedwork del proyecto
 """
 
 from abc import ABC, abstractmethod
-from typing import List
 from .entities import Entity
 
 
@@ -15,7 +14,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def get_all(self) -> List[Entity]:
+    def get_all(self) -> list[Entity]:
         ...
 
     @abstractmethod
@@ -28,4 +27,18 @@ class Repository(ABC):
 
     @abstractmethod
     def delete(self, entity_id: int):
+        ...
+
+
+class Mapper(ABC):
+    @abstractmethod
+    def get_type(self) -> type:
+        ...
+
+    @abstractmethod
+    def entity_to_dto(self, entity: Entity) -> any:
+        ...
+
+    @abstractmethod
+    def dto_to_entity(self, dto: any) -> Entity:
         ...
