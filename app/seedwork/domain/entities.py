@@ -5,14 +5,32 @@ En este archivo usted encontrará las entidades reusables parte del seedwork del
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
+import uuid
 from app.seedwork.domain.events import DomainEvent
+from app.seedwork.domain.exceptions import IdMustBeInmutableExcepcion
+from app.seedwork.domain.rules import IdEntidadEsInmutable
 
 
 @dataclass
 class Entity:
-    id: int = field(hash=True)
-    created_at: datetime = field(default=datetime.now())
-    updated_at: datetime = field(default=datetime.now())
+    id: uuid.UUID = field(hash=True)
+    _id: uuid.UUID = field(init=False, repr=False, hash=True)
+    createdAt: datetime = field(default=datetime.now())
+    updatedAt: datetime = field(default=datetime.now())
+
+    @classmethod
+    def siguiente_id(self) -> uuid.UUID:
+        return uuid.uuid4()
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, id: uuid.UUID) -> None:
+        if not IdEntidadEsInmutable(self).is_valid():
+            raise IdMustBeInmutableExcepcion()
+        self._id = self.siguiente_id()
         
 
 @dataclass

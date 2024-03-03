@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi import FastAPI
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app.main import app_test
+from app.asdfasdmain import app_test
 
 
 def start_application():
@@ -26,15 +26,15 @@ def app() -> Generator[FastAPI, Any, None]:
     yield _app
 
 
-@pytest.fixture(scope="function")
-def db(app: FastAPI) -> Generator[SessionTesting, Any, None]:
-    connection = engine.connect()
-    transaction = connection.begin()
-    session = SessionTesting(bind=connection)
-    yield session
-    session.close()
-    transaction.rollback()
-    connection.close()
+# @pytest.fixture(scope="function")
+# def db(app: FastAPI) -> Generator[SessionTesting, Any, None]:
+#     connection = engine.connect()
+#     transaction = connection.begin()
+#     session = SessionTesting(bind=connection)
+#     yield session
+#     session.close()
+#     transaction.rollback()
+#     connection.close()
 
 
 @pytest.fixture(scope="function")

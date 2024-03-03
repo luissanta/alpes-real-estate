@@ -1,5 +1,5 @@
 from app.seedwork.aplication.queries import Query, QueryHandler, QueryResultado
-from app.seedwork.aplication.queries import ejecutar_query as query
+from app.seedwork.aplication.queries import execute_query as query
 from app.moduls.lists.infrastructure.repositories import ListRepository
 from dataclasses import dataclass
 from .base import ReservaQueryBaseHandler

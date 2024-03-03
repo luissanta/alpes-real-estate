@@ -16,5 +16,5 @@ class QueryHandler(ABC):
         raise NotImplementedError()
 
 @singledispatch
-def ejecutar_query(query):
+def execute_query(query):
     raise NotImplementedError(f'No existe implementación para el query de tipo {type(query).__name__}')

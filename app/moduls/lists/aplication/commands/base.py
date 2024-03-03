@@ -8,9 +8,9 @@ class CreateEstateBaseHandler(QueryHandler):
         self._list_factories: ListFactory = ListFactory()
 
     @property
-    def fabrica_repositorio(self):
+    def repository_factory(self):
         return self._repository_factory
     
     @property
-    def fabrica_vuelos(self):
+    def list_factories(self):
         return self._list_factories    

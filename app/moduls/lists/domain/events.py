@@ -4,24 +4,27 @@ import uuid
 from app.seedwork.domain.events import (DomainEvent)
 from datetime import datetime
 
+class EventoReserva(DomainEvent):
+    ...
+
 @dataclass
-class ReservaCreada(DomainEvent):
+class ReservaCreada(EventoReserva):
     id_reserva: uuid.UUID = None
     id_cliente: uuid.UUID = None
     estado: str = None
     fecha_creacion: datetime = None
     
 @dataclass
-class ReservaCancelada(DomainEvent):
+class ReservaCancelada(EventoReserva):
     id_reserva: uuid.UUID = None
     fecha_actualizacion: datetime = None
 
 @dataclass
-class ReservaAprobada(DomainEvent):
+class ReservaAprobada(EventoReserva):
     id_reserva: uuid.UUID = None
     fecha_actualizacion: datetime = None
 
 @dataclass
-class ReservaPagada(DomainEvent):
+class ReservaPagada(EventoReserva):
     id_reserva: uuid.UUID = None
     fecha_actualizacion: datetime = None

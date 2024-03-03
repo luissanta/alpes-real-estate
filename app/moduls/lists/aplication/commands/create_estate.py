@@ -1,42 +1,34 @@
-from app.seedwork.aplication.commands import Comando
-from app.moduls.lists.aplication.dto import EstateDTO
+from app.seedwork.aplication.commands import Command
+from app.moduls.lists.aplication.dto import ListDTO
 from .base import CreateEstateBaseHandler
 from dataclasses import dataclass, field
-from app.seedwork.aplication.commands import ejecutar_commando as comando
+from app.seedwork.aplication.commands import execute_command as command
 
 from app.moduls.lists.domain.entities import Estate
-from app.seedwork.infrastructure.uow import UnitOfWork
-from app.moduls.lists.aplication.mappers import MapeadorReserva
+from app.seedwork.infrastructure.uow import UnitOfWorkPort
+from app.moduls.lists.aplication.mappers import MapeadorEstate
 from app.moduls.lists.infrastructure.repositories import ListRepository
 
 @dataclass
-class CreateEstate(Comando):
-    fecha_creacion: str
-    fecha_actualizacion: str
-    id: str
-    estates: list[EstateDTO]
-
+class CreateEstate(Command):
+    estates: ListDTO
 
 class CreateEstateHandler(CreateEstateBaseHandler):
     
-    def handle(self, comando: CreateEstate):
-        reserva_dto = EstateDTO(
-                fecha_actualizacion=comando.fecha_actualizacion
-            ,   fecha_creacion=comando.fecha_creacion
-            ,   id=comando.id
-            ,   itinerarios=comando.itinerarios)
+    def handle(self, command: CreateEstate):
+        estates = command
+        
+        estate_list: ListDTO = self.list_factories.create_object(estates, MapeadorEstate())
+        estate_list.create_estate(estate_list)
+        repository = self.repository_factory.create_object(ListRepository.__class__)
 
-        reserva: Estate = self.fabrica_vuelos.crear_objeto(reserva_dto, MapeadorReserva())
-        #reserva.crear_reserva(reserva)
-        repositorio = self.fabrica_repositorio.crear_objeto(ListRepository.__class__)
-
-        UnitOfWork.registrar_batch(repositorio.agregar, reserva)
-        UnitOfWork.savepoint()
-        UnitOfWork.commit()
+        UnitOfWorkPort.regist_batch(repository.create, estate_list)
+        UnitOfWorkPort.savepoint()
+        UnitOfWorkPort.commit()
 
 
-@comando.register(CreateEstate)
-def ejecutar_comando_crear_reserva(comando: CreateEstate):
+@command.register(CreateEstate)
+def execute_command_create_state(comando: CreateEstate):
     handler = CreateEstateHandler()
     handler.handle(comando)
     
