@@ -15,6 +15,8 @@ from app.seedwork.domain.exceptions import DomainException
 from app.seedwork.aplication.commands import execute_command
 from app.seedwork.aplication.queries import execute_query
 
+from app.moduls.locations.aplication.commands.create_location import CreateLocation
+
 bp = apiflask.create_blueprint('list_router', '/list_router')
 
 @bp.route("/list", methods=('GET',))
@@ -40,6 +42,26 @@ def async_create_state():
         estate_dto = map_estate.external_to_dto(estate_dict)
 
         command = CreateEstate(estate_dto)
+        
+        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
+        # Revise la clase Despachador de la capa de infraestructura
+        execute_command(command)
+        
+        return Response('{}', status=201, mimetype='application/json')
+    except DomainException as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+
+
+@bp.route("/location-command", methods=('POST',))
+def async_create_location():
+    try:
+        estate_dict = request.json
+
+        #print("Request.json: ", estate_dict)
+        map_estate = MapApp()
+        estate_dto = map_estate.external_to_dto(estate_dict)
+
+        command = CreateLocation(estate_dto)
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
