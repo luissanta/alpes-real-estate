@@ -15,10 +15,11 @@ list_estates_estate = db.Table(
     db.Column("id", db.String, db.ForeignKey("list_estates.id")),
     db.Column("estate_id", db.String),
     db.Column("code", db.String),
-    db.Column("name", db.Integer),
+    db.Column("name", db.String),
+    db.Column("uniquecode", db.String),
     db.ForeignKeyConstraint(
-        ["estate_id", "code", "name"],
-        ["estate.estate_id", "estate.code", "estate.name"]
+        ["estate_id", "uniquecode"],
+        ["estate.estate_id", "estate.uniquecode"]
     )
 )
 
@@ -27,6 +28,7 @@ class Estate(db.Model):
     estate_id = db.Column(db.String, primary_key=True)
     code = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
+    uniquecode = db.Column(db.String, primary_key=True)
 
 class List_estates(db.Model):
     __tablename__ = "list_estates"

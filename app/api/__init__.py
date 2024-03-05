@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 
+from config import Setting
+
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -52,8 +54,7 @@ def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] =\
-            'sqlite:///' + os.path.join(basedir, 'database.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = Setting.DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
@@ -72,7 +73,7 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         #if not app.config.get('TESTING'):
-        comenzar_consumidor()
+        #comenzar_consumidor()
 
      # Importa Blueprints
     from . import list_router
