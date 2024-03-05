@@ -9,6 +9,11 @@ from .rules import BusinessRule
 class DomainException(Exception):
     ...
 
+class IdMustBeInmutableExcepcion(DomainException):
+    def __init__(self, mensaje='El identificador debe ser inmutable'):
+        self.__mensaje = mensaje
+    def __str__(self):
+        return str(self.__mensaje)
 
 class BusinessRuleException(DomainException):
     def __init__(self, rule: BusinessRule):

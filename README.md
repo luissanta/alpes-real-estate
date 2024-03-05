@@ -41,3 +41,11 @@ This is automatically generated and can be accessed via `http://0.0.0.0:8008/doc
 ## Migrations and seeders
 ### Migrations
 1. Run migrations with the command `alembic upgrade head`, this command will fill the database
+
+
+## Eventos 
+### Prepara el ambiente para probar los eventos, se debe abrir una consola para cada uno.
+1. `docker-compose --profile pulsar up` 
+2. `python main.py` notificador se debe entrar a app/notificaciones/
+3. `python consumidor.py` consume el evento
+4. `python .\test.py` publica el evento

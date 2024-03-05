@@ -1,5 +1,5 @@
 from app.seedwork.aplication.queries import Query, QueryHandler, QueryResultado
-from app.seedwork.aplication.queries import ejecutar_query as query
+from app.seedwork.aplication.queries import execute_query as query
 from app.moduls.lists.infrastructure.repositories import ListRepository
 from dataclasses import dataclass
 from .base import ReservaQueryBaseHandler
@@ -18,6 +18,6 @@ class getEstatesHandler(ReservaQueryBaseHandler):
         return QueryResultado(resultado=reserva)
 
 @query.register(GetEstate)
-def ejecutar_query_obtener_reserva(query: GetEstate):
+def execute_query_get_list(query: GetEstate):
     handler = getEstatesHandler()
     return handler.handle(query)

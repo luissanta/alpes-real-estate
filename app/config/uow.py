@@ -3,7 +3,7 @@ from app.seedwork.infrastructure.uow import UnitOfWork, Batch
 
 class unitOfWorkSQLAlchemy(UnitOfWork):
 
-    def __init__(self):
+    def __init__(self):        
         self._batches: list[Batch] = list()
 
     def __enter__(self) -> UnitOfWork:
@@ -26,7 +26,7 @@ class unitOfWorkSQLAlchemy(UnitOfWork):
     def commit(self):
         for batch in self.batches:
             lock = batch.lock
-            batch.operacion(*batch.args, **batch.kwargs)
+            batch.operation(*batch.args, **batch.kwargs)
 
         db.session.commit()
 

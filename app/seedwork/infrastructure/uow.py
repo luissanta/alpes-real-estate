@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from click import UUID
 
 from app.seedwork.domain.entities import RootAggregation
-#from pydispatch import dispatcher
+from pydispatch import dispatcher
 
 import pickle
 
@@ -12,8 +13,8 @@ class Lock(Enum):
     PESIMISTA = 2
 
 class Batch:
-    def __init__(self, operacion, lock: Lock, *args, **kwargs):
-        self.operacion = operacion
+    def __init__(self, operation, lock: Lock = Lock.PESIMISTA, *args, **kwargs):
+        self.operation = operation
         self.args = args
         self.lock = lock
         self.kwargs = kwargs
@@ -26,12 +27,12 @@ class UnitOfWork(ABC):
     def __exit__(self, *args):
         self.rollback()
 
-    def _obtener_eventos(self, batches=None):
+    def _get_events(self, batches=None):
         batches = self.batches if batches is None else batches
         for batch in batches:
             for arg in batch.args:
                 if isinstance(arg, RootAggregation):
-                    return arg.eventos
+                    return arg.events
         return list()
 
     @abstractmethod
@@ -47,7 +48,7 @@ class UnitOfWork(ABC):
         raise NotImplementedError                    
 
     def commit(self):
-        self._publicar_eventos_post_commit()
+        self._publish_events_post_commit()
         self._limpiar_batches()
 
     @abstractmethod
@@ -58,45 +59,44 @@ class UnitOfWork(ABC):
     def savepoint(self):
         raise NotImplementedError
 
-    def registrar_batch(self, operacion, *args, lock=Lock.PESIMISTA, **kwargs):
-        batch = Batch(operacion, lock, *args, **kwargs)
+    def regist_batch(self, operation, *args, lock, **kwargs):
+        batch = Batch(operation, lock, *args, **kwargs)
         self.batches.append(batch)
-        self._publicar_eventos_dominio(batch)
+        self._publish_domain_events(batch)
 
-    def _publicar_eventos_dominio(self, batch):
-        #for evento in self._obtener_eventos(batches=[batch]):
-        #    dispatcher.send(signal=f'{type(evento).__name__}Dominio', evento=evento)
+    def _publish_domain_events(self, batch):
+        for event in self._get_events(batches=[batch]):
+            print('event: ', event)
+            dispatcher.send(signal=f'{type(event).__name__}Domain', evento=event)
         pass
 
-    def _publicar_eventos_post_commit(self):
-        #for evento in self._obtener_eventos():
-        #    dispatcher.send(signal=f'{type(evento).__name__}Integracion', evento=evento)
+    def _publish_events_post_commit(self):
+        for event in self._get_events():           
+            dispatcher.send(signal=f'{type(event).__name__}Integracion', evento=event)
         pass
 
 def is_flask():
     try:
-        #from flask import session
+        from flask import session
         return True    
     except Exception as e:
-        from fastapi import session        
         return False
 
 def regist_unit_of_work(serialized_obj):
-    from app.config.uow import UnitOfWorkSQLAlchemy
-    from fastapi import session
-    
-
+    from app.config.uow import unitOfWorkSQLAlchemy
+    from flask import session
     session['uow'] = serialized_obj
 
 def flask_uow():
-    from fastapi import session
-    from app.config.uow import UnitOfWorkSQLAlchemy
+    from flask import session
+    from app.config.uow import unitOfWorkSQLAlchemy
     if session.get('uow'):
-        return session['uow']
+       return session['uow']
     else:
-        uow_serialized = pickle.dumps(UnitOfWorkSQLAlchemy())
-        regist_unit_of_work(uow_serialized)
-        return uow_serialized
+       uow_serialized = pickle.dumps(unitOfWorkSQLAlchemy())
+       regist_unit_of_work(uow_serialized)
+       return uow_serialized
+
 
 def unit_of_work() -> UnitOfWork:
     if is_flask():
@@ -105,6 +105,7 @@ def unit_of_work() -> UnitOfWork:
         raise Exception('No hay unidad de trabajo')
 
 def save_unit_of_work(uow: UnitOfWork):
+    regist_unit_of_work(pickle.dumps(uow))
     if is_flask():
         regist_unit_of_work(pickle.dumps(uow))
     else:
@@ -137,7 +138,7 @@ class UnitOfWorkPort:
         return uow.savepoints()
 
     @staticmethod
-    def registrar_batch(operacion, *args, lock=Lock.PESIMISTA, **kwargs):
+    def regist_batch(operation, *args, lock=Lock.OPTIMISTA, **kwargs):
         uow = unit_of_work()
-        uow.registrar_batch(operacion, *args, lock=lock, **kwargs)
+        uow.regist_batch(operation, *args, lock=lock, **kwargs)
         save_unit_of_work(uow)
