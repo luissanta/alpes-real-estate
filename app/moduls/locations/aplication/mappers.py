@@ -12,6 +12,11 @@ class MapeadorEstateDTOJson(AppMap):
         estate_dto: LocationDTO = LocationDTO( location.get('code'), location.get('name')) 
         return estate_dto
     
+    def _procesar_pulsar_estate(self, location:any) -> LocationDTO:
+
+        estate_dto: LocationDTO = LocationDTO( location.id_cliente, location.estado) 
+        return estate_dto
+    
     def external_to_dto(self, externo: dict) -> ListDTO:
 
         list_dto = ListDTO()
@@ -19,6 +24,17 @@ class MapeadorEstateDTOJson(AppMap):
         locations: list[LocationDTO] = list()
         for itin in externo.get("locations"):
             list_dto.locations.append(self._procesar_estate(itin))
+
+        return list_dto
+    
+    def external_pulsar_to_dto(self, externo) -> ListDTO:
+
+        list_dto = ListDTO()
+
+        locations: list[LocationDTO] = list()
+       
+        
+        list_dto.locations.append(self._procesar_pulsar_estate(externo))
 
         return list_dto
 
@@ -50,7 +66,7 @@ class MapeadorLocation(RepMap):
 
         estates_dto: list[LocationDTO] = dto.locations
 
-        for itin in estates_dto.estates:
+        for itin in estates_dto.locations:
             list_locations.locations.append(self._procesar_locations(itin))
             
         return list_locations

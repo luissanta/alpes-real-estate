@@ -37,4 +37,4 @@ class List_locations(RootAggregation):
         #     self.updatedAt = None #datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
         
         #     self.locations.append(location)
-        self.add_events(ReservaCreada(id=1,id_reserva="1", id_cliente="1", estado="funciona", fecha_creacion=datetime.now()))
+        #self.add_events(ReservaCreada(id=1,id_reserva="1", id_cliente="1", estado="funciona", fecha_creacion=datetime.now()))

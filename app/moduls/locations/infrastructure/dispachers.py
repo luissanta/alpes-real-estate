@@ -38,3 +38,4 @@ class Despachador:
         )
         comando_integracion = ComandoCrearLocation(data=payload)
         self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearLocation))
+

@@ -46,7 +46,7 @@ def comenzar_consumidor():
     # threading.Thread(target=pagos.suscribirse_a_comandos).start()
     # threading.Thread(target=precios_dinamicos.suscribirse_a_comandos).start()
     # threading.Thread(target=vehiculos.suscribirse_a_comandos).start()
-    #threading.Thread(target=list_consumer.suscribirse_a_comandos).start()
+    #threading.Thread(target=location_consumer.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask

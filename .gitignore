@@ -464,3 +464,4 @@ alembic.ini.production
 alembic.ini.stage
 test_db.db-journal
 *database.db
+data/

@@ -23,3 +23,8 @@ class ListService(Service):
         repository = self.repository_factory.create_object(ListRepository.__class__)
         
         return self.list_factory.create_object(repository.get_all(), MapeadorLocation())
+    
+    def create(self, data):
+        repository = self.repository_factory.create_object(ListRepository.__class__)
+        
+        return self.list_factory.create_object(repository.create(data), MapeadorLocation())

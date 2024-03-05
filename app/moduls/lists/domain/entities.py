@@ -29,12 +29,8 @@ class List_estates(RootAggregation):
 
     def create_estate(self, estateslist: List_estates):
         estates = estateslist
-        # for estate in estateslist:
-        #     self.estate.id = estate.id
-        #     self.estate.code = estate.code
-        #     self.estate.name = estate.name
-        #     self.createdAt = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
-        #     self.updatedAt = None #datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+        for estate in estateslist.estates:
+            #elf.updatedAt = None #datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+            self.add_events(ReservaCreada(id=estate.id,id_reserva=estate.id, id_cliente=estate.code, estado=estate.name, fecha_creacion=datetime.now()))
+
         
-        #     self.estates.append(estate)
-        self.add_events(ReservaCreada(id=1,id_reserva="1", id_cliente="1", estado="funciona", fecha_creacion=datetime.now()))
