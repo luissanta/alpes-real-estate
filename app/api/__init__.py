@@ -73,7 +73,7 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         #if not app.config.get('TESTING'):
-        #comenzar_consumidor()
+        comenzar_consumidor()
 
      # Importa Blueprints
     from . import list_router

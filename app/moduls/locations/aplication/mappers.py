@@ -66,7 +66,11 @@ class MapeadorLocation(RepMap):
 
         estates_dto: list[LocationDTO] = dto.locations
 
-        for itin in estates_dto.estates:
-            list_locations.locations.append(self._procesar_locations(itin))
+        try:
+            for itin in estates_dto.estates:
+                list_locations.locations.append(self._procesar_locations(itin))
+        except Exception as e:
+            for itin in estates_dto.locations:
+                list_locations.locations.append(self._procesar_locations(itin))
             
         return list_locations
