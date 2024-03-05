@@ -48,7 +48,7 @@ class UnitOfWork(ABC):
         raise NotImplementedError                    
 
     def commit(self):
-        self._publish_events_post_commit()
+        #self._publish_events_post_commit()
         self._limpiar_batches()
 
     @abstractmethod
