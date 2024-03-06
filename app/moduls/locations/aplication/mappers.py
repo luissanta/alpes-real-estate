@@ -14,7 +14,7 @@ class MapeadorEstateDTOJson(AppMap):
     
     def _procesar_pulsar_estate(self, location:any) -> LocationDTO:
 
-        estate_dto: LocationDTO = LocationDTO( location.id_cliente, location.estado) 
+        estate_dto: LocationDTO = LocationDTO( location.code, location.name) 
         return estate_dto
     
     def external_to_dto(self, externo: dict) -> ListDTO:
@@ -32,9 +32,19 @@ class MapeadorEstateDTOJson(AppMap):
         list_dto = ListDTO()
 
         locations: list[LocationDTO] = list()
-       
-        
-        list_dto.locations.append(self._procesar_pulsar_estate(externo))
+        skip_first = True
+
+        for itin in externo.locations:
+            if skip_first:
+                skip_first = False
+                continue
+
+            try:
+                list_dto.locations.append(self._procesar_estate(itin))
+            except Exception as e:
+                print("validate pulsar estate: ", e)
+
+    
 
         return list_dto
 

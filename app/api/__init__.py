@@ -9,7 +9,7 @@ from config import Setting
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
-    import app.moduls.lists.aplication
+    #import app.moduls.lists.aplication
     import app.moduls.locations.aplication
     #import aeroalpes.modulos.vuelos.aplicacion
 
@@ -32,8 +32,8 @@ def comenzar_consumidor():
     # import aeroalpes.modulos.precios_dinamicos.infraestructura.consumidores as precios_dinamicos
     # import aeroalpes.modulos.vehiculos.infraestructura.consumidores as vehiculos
     #import app.moduls.lists.infrastructure.consumers as list_consumer
-    import app.moduls.locations.infrastructure.consumers as location_consumer    
-    import threading
+    #import app.moduls.locations.infrastructure.consumers as location_consumer    
+    #import threading
     # Suscripción a eventos
     # threading.Thread(target=cliente.suscribirse_a_eventos).start()
     # threading.Thread(target=hoteles.suscribirse_a_eventos).start()
@@ -41,7 +41,7 @@ def comenzar_consumidor():
     # threading.Thread(target=precios_dinamicos.suscribirse_a_eventos).start()
     # threading.Thread(target=vehiculos.suscribirse_a_eventos).start()
     #threading.Thread(target=list_consumer.suscribirse_a_eventos).start()
-    threading.Thread(target=location_consumer.suscribirse_a_eventos).start()
+    #threading.Thread(target=location_consumer.suscribirse_a_eventos).start()
     # # Suscripción a comandos
     # threading.Thread(target=cliente.suscribirse_a_comandos).start()
     # threading.Thread(target=hoteles.suscribirse_a_comandos).start()

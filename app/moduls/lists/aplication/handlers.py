@@ -29,7 +29,7 @@ class HandlerReservaDominio(Handler):
     @staticmethod
     def handle_reserva_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva-dominio')
+        despachador.publicar_comando(evento, 'eventos-reserva-dominio')
 
     @staticmethod
     def handle_reserva_cancelada(evento):
