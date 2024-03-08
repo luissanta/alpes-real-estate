@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from app.seedwork.aplication.commands import execute_command as command
 
 from app.moduls.locations.domain.entities import Location
-from app.seedwork.infrastructure.uow import UnitOfWorkPort, UnitOfWorkPort1
+from app.seedwork.infrastructure.uow import UnitOfWorkPort
 from app.moduls.locations.aplication.mappers import MapeadorLocation
 from app.moduls.locations.infrastructure.repositories import ListRepository
 
@@ -22,9 +22,9 @@ class CreateEstateHandler(CreateLocationBaseHandler):
         location_list.create_location(location_list)
         repository = self.repository_factory.create_object(ListRepository.__class__)
 
-        UnitOfWorkPort1.regist_batch(repository.create, location_list)
-        UnitOfWorkPort1.savepoint()
-        UnitOfWorkPort1.commit()
+        UnitOfWorkPort.regist_batch(repository.create, location_list)
+        UnitOfWorkPort.savepoint()
+        UnitOfWorkPort.commit()
 
 
 @command.register(CreateLocation)

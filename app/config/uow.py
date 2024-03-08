@@ -1,7 +1,7 @@
 from app.config.db import db
 from app.seedwork.infrastructure.uow import UnitOfWork, Batch
 
-class unitOfWorkSQLAlchemy(UnitOfWork):
+class UnitOfWorkSQLAlchemy(UnitOfWork):
 
     def __init__(self):        
         self._batches: list[Batch] = list()
@@ -41,4 +41,5 @@ class unitOfWorkSQLAlchemy(UnitOfWork):
         super().rollback()
     
     def savepoint(self):
-        db.session.begin_nested()
+        #db.session.begin_nested()
+        pass

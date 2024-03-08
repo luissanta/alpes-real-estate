@@ -17,6 +17,8 @@ from app.moduls.locations.aplication.commands.create_location import CreateLocat
 
 bp = apiflask.create_blueprint('list_router', '/list_router')
 
+cons_mimetype = 'application/json'
+
 @bp.route("/list", methods=('GET',))
 def get_list():
     map_estates = MapApp()
@@ -45,9 +47,9 @@ def async_create_state():
         # Revise la clase Despachador de la capa de infraestructura
         execute_command(command)
         
-        return Response('{}', status=201, mimetype='application/json')
+        return Response('{}', status=201, mimetype=cons_mimetype)
     except DomainException as e:
-        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)
 
 
 @bp.route("/location-command", methods=('POST',))
@@ -65,6 +67,6 @@ def async_create_location():
         # Revise la clase Despachador de la capa de infraestructura
         execute_command(command)
         
-        return Response('{}', status=201, mimetype='application/json')
+        return Response('{}', status=201, mimetype=cons_mimetype)
     except DomainException as e:
-        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)
