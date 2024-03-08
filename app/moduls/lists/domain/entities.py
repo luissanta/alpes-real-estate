@@ -38,26 +38,26 @@ class List_estates(RootAggregation):
         estates = estateslist
         cmd = ComandoCrearReservaPayload()
         cmd.id = estateslist.id
-        for estate in estates:
+        for estate in estates.estates:
             for geo_locations in estate.geo_locations:
-                cmd.locations.append({"estate_id": id , "lat": geo_locations.lat, "lon": geo_locations.lon})
+                cmd.locations.append({"estate_id": estate.id, "code": geo_locations.lat, "name": geo_locations.lon})
                 self.add_events(cmd)    
             
             #cmd.locations.append({"code": estate.code, "name": estate.name})
             #elf.updatedAt = None #datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
             #self.add_events(ReservaCreada(id=estate.id,id_reserva=estate.id, id_cliente=estate.code, estado=estate.name, fecha_creacion=datetime.now()))
-        self.add_events(cmd)
-        example_data = str({
-            "name": "John Doe",
-            "age": 30,
-            "address": {
-            "street": "123 Main Street",
-            "city": "Anytown"
-            }
-        })
-        payload = CommandCreateCompanyJson(
-            data=example_data    
-        )
-        self.add_events(payload)
+        # self.add_events(cmd)
+        # example_data = str({
+        #     "name": "John Doe",
+        #     "age": 30,
+        #     "address": {
+        #     "street": "123 Main Street",
+        #     "city": "Anytown"
+        #     }
+        # })
+        # payload = CommandCreateCompanyJson(
+        #     data=example_data    
+        # )
+        # self.add_events(payload)
         
         

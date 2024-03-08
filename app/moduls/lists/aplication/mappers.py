@@ -26,7 +26,6 @@ class MapeadorEstateDTOJson(AppMap):
 
         list_dto = ListDTO()
 
-        estates: list[EstateDTO] = list()
         for itin in externo.get("estates"):
             list_dto.estates.append(self._procesar_estate(itin))
 
@@ -48,7 +47,7 @@ class MapeadorEstate(RepMap):
         return Estate(code=estate_dto.code, name=estate_dto.name, geo_locations=geo_locations_entity)
     
     def _procesar_geo_locations(self, geo_location_dto: GeoLocationDTO) -> GeoLocation:
-        return GeoLocation(lat=geo_location_dto.code, lat=geo_location_dto.name)
+        return GeoLocation(lat=geo_location_dto.lat, lon=geo_location_dto.lon)
     
     def get_type(self) -> type:
         return Estate.__class__
@@ -58,7 +57,7 @@ class MapeadorEstate(RepMap):
         geo_locations_dto: list[GeoLocationDTO] = list()
 
         for estates_entity in list_entidad.estates:
-            for geo_location_entity in list_entidad.estates.geo_locations:
+            for geo_location_entity in estates_entity.geo_locations:
                 geo_locations_dto.append(GeoLocationDTO(lat=geo_location_entity.lat, lon=geo_location_entity.lon))
 
             estate_dto = EstateDTO(id=estates_entity.id, name=estates_entity.name, code=estates_entity.code)

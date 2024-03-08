@@ -21,7 +21,6 @@ class MapeadorEstateDTOJson(AppMap):
 
         list_dto = ListDTO()
 
-        locations: list[LocationDTO] = list()
         for itin in externo.get("locations"):
             list_dto.locations.append(self._procesar_estate(itin))
 
@@ -31,7 +30,6 @@ class MapeadorEstateDTOJson(AppMap):
 
         list_dto = ListDTO()
 
-        locations: list[LocationDTO] = list()
         skip_first = True
 
         for itin in externo.locations:
@@ -79,7 +77,7 @@ class MapeadorLocation(RepMap):
         try:
             for itin in estates_dto.estates:
                 list_locations.locations.append(self._procesar_locations(itin))
-        except Exception as e:
+        except Exception:
             for itin in estates_dto.locations:
                 list_locations.locations.append(self._procesar_locations(itin))
             
