@@ -4,7 +4,6 @@ from typing import Any, Dict
 from flask import redirect, render_template, request, session, url_for
 from flask import Response, Request
 
-from pydantic import BaseModel
 
 from app.moduls.lists.aplication.querys.get_states import GetEstate
 from app.moduls.lists.aplication.services import ListService

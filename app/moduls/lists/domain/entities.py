@@ -9,7 +9,7 @@ from datetime import datetime
 import uuid
 from app.moduls.lists.domain.events import ReservaCreada
 import app.moduls.lists.domain.value_objects as ov
-from app.moduls.lists.infrastructure.schema.v1.commands import ComandoCrearReserva, ComandoCrearReservaPayload
+from app.moduls.lists.infrastructure.schema.v1.commands import ComandoCrearReserva, ComandoCrearReservaPayload, CommandCreateCompanyJson
 from app.seedwork.domain.entities import Entity, RootAggregation
 
 
@@ -37,5 +37,17 @@ class List_estates(RootAggregation):
             #elf.updatedAt = None #datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
             #self.add_events(ReservaCreada(id=estate.id,id_reserva=estate.id, id_cliente=estate.code, estado=estate.name, fecha_creacion=datetime.now()))
         self.add_events(cmd)
+        example_data = str({
+            "name": "John Doe",
+            "age": 30,
+            "address": {
+            "street": "123 Main Street",
+            "city": "Anytown"
+            }
+        })
+        payload = CommandCreateCompanyJson(
+            data=example_data    
+        )
+        self.add_events(payload)
         
         
