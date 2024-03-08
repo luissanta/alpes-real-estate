@@ -5,9 +5,16 @@ from app.moduls.lists.infrastructure.dispachers import Despachador
 class HandlerReservaIntegracion(Handler):
 
     @staticmethod
-    def handle_reserva_creada(evento):
+    def handle_compania_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_comando(evento, 'create-company')
+
+    @staticmethod
+    def handle_rollback_compania_creada(evento):
+        despachador = Despachador()
+        despachador.publicar_comando(evento, 'rollback-create-company')
+
+        
 
     @staticmethod
     def handle_reserva_cancelada(evento):
