@@ -4,7 +4,7 @@ from pulsar import ConsumerType, Client, Message
 pulsar_url = "pulsar://localhost:6650"
 
 # Configura el nombre del tema al que deseas suscribirte
-topic_name = "persistent://public/default/eventos-reserva"
+topic_name = "persistent://public/default/crear-compania9"
 
 # Configura el nombre de la suscripción
 subscription_name = "aeroalpes-sub-eventos"
@@ -36,8 +36,6 @@ try:
             # Marca el mensaje como consumido
             consumer.acknowledge(msg)
 
-except KeyboardInterrupt:
-    pass  # Maneja la interrupción de teclado (Ctrl+C) para salir del bucle
 
 finally:
     # Cierra el consumidor y el cliente al finalizar

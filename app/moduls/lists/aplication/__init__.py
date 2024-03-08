@@ -1,11 +1,13 @@
 from pydispatch import dispatcher
 
+from app.moduls.lists.infrastructure.schema.v1.commands import CommandCreateCompanyJson, CommandRollbackCreateCompanyJson
+
 from .handlers import HandlerReservaIntegracion
 
-from app.moduls.lists.domain.events import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
 
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_creada, signal=f'{ReservaCreada.__name__}Integracion')
-#handle_propiedad_vendida
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_cancelada, signal=f'{ReservaCancelada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_pagada, signal=f'{ReservaPagada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_aprobada, signal=f'{ReservaAprobada.__name__}Integracion')
+
+#SI no funciona se debe habilidar dispatcher.connect(HandlerReservaDominio.handle_reserva_creada, signal=f'{ReservaCreada.__name__}Dominio')
+
+dispatcher.connect(HandlerReservaIntegracion.handle_compania_creada, signal=f'{CommandCreateCompanyJson.__name__}Integracion')
+dispatcher.connect(HandlerReservaIntegracion.handle_rollback_compania_creada, signal=f'{CommandRollbackCreateCompanyJson.__name__}Integracion')
+

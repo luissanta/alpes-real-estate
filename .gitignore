@@ -463,3 +463,8 @@ test_db.db
 alembic.ini.production
 alembic.ini.stage
 test_db.db-journal
+*database.db
+data/
+data/bookkeeper/
+data/zookeeper/
+data/ledger/

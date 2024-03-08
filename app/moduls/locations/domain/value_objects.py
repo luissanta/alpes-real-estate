@@ -8,6 +8,10 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class Location:
-    latitude: str
-    longitude: str
+class Name:
+    name: str
+
+
+@dataclass(frozen=True)
+class Code:
+    code: str
