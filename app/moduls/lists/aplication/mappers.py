@@ -57,7 +57,7 @@ class MapeadorEstate(RepMap):
         for company in estate_dto.companies:
             companies_entity.append(self._procesar_companies(company))    
 
-        return Estate(id=estate_dto.id, code=estate_dto.code, name=estate_dto.name, geo_locations=geo_locations_entity, companies = companies_entity)
+        return Estate( code=estate_dto.code, name=estate_dto.name, geo_locations=geo_locations_entity, companies = companies_entity)
     
     def _procesar_geo_locations(self, geo_location_dto: GeoLocationDTO) -> GeoLocation:
         return GeoLocation(lat=geo_location_dto.lat, lon=geo_location_dto.lon)
@@ -99,7 +99,6 @@ class MapeadorEstate(RepMap):
 
             for list_estate in dto:
                 list_estate_entity = List_estates()
-                list_estate_entity.id = list_estate.id
                 list_estate_entity.createdAt = datetime.now()
                 list_estate_entity.updatedAt = datetime.now()
 
@@ -112,7 +111,6 @@ class MapeadorEstate(RepMap):
 
             return list_estate_entities    
         else:
-            list_estates.id = dto.id
             list_estates.createdAt = datetime.now()
             list_estates.updatedAt = datetime.now()
 
