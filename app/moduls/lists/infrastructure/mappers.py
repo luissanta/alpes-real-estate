@@ -11,10 +11,10 @@ class MapeadorEstate(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
     def _procesar_estates(self, list_estate: List_estates) -> EstateDTO:
-        return [EstateDTO( estate_id=str(item.id), code=item.code, name=item.name, uniquecode = str(uuid.uuid4())) for item in list_estate]
+        return [EstateDTO( estate_id=str(uuid.uuid4()), code=item.code, name=item.name, uniquecode = str(uuid.uuid4())) for item in list_estate]
     
     def _procesar_estates_dto(self, list_estate_dto: List_estatesDTO) -> Estate:
-        return [Estate(id=item.estate_id, code=item.code, name=item.name) for item in list_estate_dto]
+        return [Estate(estate_id=item.estate_id,id=item.estate_id, code=item.code, name=item.name) for item in list_estate_dto]
 
     def get_type(self) -> type:
         return List_estates.__class__
@@ -26,7 +26,7 @@ class MapeadorEstate(RepMap):
         if not list_entidad:
             return list_dto
 
-        list_dto.id = str(uuid.uuid4())
+        list_dto.id = str(uuid.uuid4())        
         
         list_dto.createdAt = datetime.now()
         list_dto.updatedAt = datetime.now()
@@ -60,6 +60,9 @@ class MapeadorEstate(RepMap):
              
             for list_estate in dto:
                 list_estate_entity = List_estates()
+
+                list_estate_entity.id = list_estate.id
+                list_estate_entity._id = list_estate.id
                 
                 list_estate_entity.createdAt = datetime.now()
                 list_estate_entity.updatedAt = datetime.now()

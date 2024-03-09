@@ -23,7 +23,6 @@ class LocationRepositoryPostgres(ListRepository):
         return self._estates_factory
 
     def get_by_id(self, entity_id: int) -> List_locations:
-        # TODO
         list_location_dto = db.session.query(List_locationsDTO).filter_by(id=str(entity_id)).one()
         try:    
             estate_list_entity = self.locations_factory.create_object(list_location_dto, MapeadorLocation())             
@@ -35,19 +34,16 @@ class LocationRepositoryPostgres(ListRepository):
         list_location_dto = db.session.query(List_locationsDTO).all()
         try:    
             estate_list_entity = self.locations_factory.create_object(list_location_dto, MapeadorLocation()) 
-            #[LocationDTO(id=item.id, code=item.code, name=item.name) for item in estate_dto]
         except Exception as e:
             print("Error: ", e)
 
         return estate_list_entity
 
     def create(self, entity: List_locations):
-        # TODO
         listesates_dto = self.locations_factory.create_object(entity, MapeadorLocation())         
         db.session.add(listesates_dto)
 
     def update(self, entity_id: int, entity: List_locations):
-        # TODO
         raise NotImplementedError
 
     def delete(self, entity_id: int):
