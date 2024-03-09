@@ -8,6 +8,7 @@ from app.moduls.lists.aplication.querys.get_states import GetEstate
 from app.moduls.lists.aplication.services import ListService
 from app.moduls.lists.aplication.mappers import MapeadorEstateDTOJson as MapApp
 from app.moduls.lists.aplication.commands.create_estate import CreateEstate
+from app.moduls.lists.aplication.commands.delete_estate import DeleteEstate
 from app.seedwork.domain.exceptions import DomainException
 
 from app.seedwork.aplication.commands import execute_command
@@ -19,11 +20,19 @@ bp = apiflask.create_blueprint('list_router', '/list_router')
 
 cons_mimetype = 'application/json'
 
+
+# @bp.route("/list/<list_id>", methods=('GET',))
+# def get_by_id(list_id):
+#     map_estates = MapApp()
+#     sr = ListService()
+#     return map_estates.dto_to_external(sr.get_all_list())
+
 @bp.route("/list", methods=('GET',))
 def get_list():
     map_estates = MapApp()
     sr = ListService()
-    return map_estates.dto_to_external(sr.get_all_list())
+    result = map_estates.dto_to_external(sr.get_all_list())
+    return result
 
 @bp.route("/listQuery", methods=('GET',))
 def get_estate_using_query(id=None):
@@ -33,7 +42,7 @@ def get_estate_using_query(id=None):
     return map_estates.dto_to_external(query_resultado.resultado)
 
 @bp.route("/estate-command", methods=('POST',))
-def async_create_state():
+def async_create_estate():
     try:
         estate_dict = request.json
 
@@ -41,16 +50,22 @@ def async_create_state():
         map_estate = MapApp()
         estate_dto = map_estate.external_to_dto(estate_dict)
 
-        command = CreateEstate(estate_dto)
+        command = CreateEstate(estate_dto)        
         
-        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
-        # Revise la clase Despachador de la capa de infraestructura
         execute_command(command)
         
         return Response('{}', status=201, mimetype=cons_mimetype)
     except DomainException as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)
 
+@bp.route("/delete/<estate_id>", methods=('DELETE',))
+def async_delete_estate(estate_id: str):
+    try:
+        command = DeleteEstate(estate_id)
+        execute_command(command)
+        return Response('{}', status=200, mimetype=cons_mimetype)
+    except DomainException as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)
 
 @bp.route("/location-command", methods=('POST',))
 def async_create_location():
@@ -63,8 +78,6 @@ def async_create_location():
 
         command = CreateLocation(estate_dto)
         
-        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
-        # Revise la clase Despachador de la capa de infraestructura
         execute_command(command)
         
         return Response('{}', status=201, mimetype=cons_mimetype)

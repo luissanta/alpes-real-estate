@@ -40,7 +40,9 @@ class MapeadorEstateDTOJson(AppMap):
         return list_dto
 
     def dto_to_external(self, dto: ListDTO) -> dict:
-        return dto.__dict__
+        if isinstance(dto, ListDTO):
+            return dto.__dict__
+        return dto        
 
 class MapeadorEstate(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
@@ -55,7 +57,7 @@ class MapeadorEstate(RepMap):
         for company in estate_dto.companies:
             companies_entity.append(self._procesar_companies(company))    
 
-        return Estate(code=estate_dto.code, name=estate_dto.name, geo_locations=geo_locations_entity, companies = companies_entity)
+        return Estate(id=estate_dto.id, code=estate_dto.code, name=estate_dto.name, geo_locations=geo_locations_entity, companies = companies_entity)
     
     def _procesar_geo_locations(self, geo_location_dto: GeoLocationDTO) -> GeoLocation:
         return GeoLocation(lat=geo_location_dto.lat, lon=geo_location_dto.lon)
@@ -86,12 +88,38 @@ class MapeadorEstate(RepMap):
         return list_dto
 
     def dto_to_entity(self, dto: ListDTO) -> List_estates:
+        list_estate_entities: list = []
+
         list_estates = List_estates()
         list_estates.estates = list()
+        if not dto:
+            return list_estates
+        
+        if isinstance(dto, list):
 
-        estates_dto: list[EstateDTO] = dto.estates
+            for list_estate in dto:
+                list_estate_entity = List_estates()
+                list_estate_entity.id = list_estate.id
+                list_estate_entity.createdAt = datetime.now()
+                list_estate_entity.updatedAt = datetime.now()
 
-        for itin in estates_dto.estates:
-            list_estates.estates.append(self._procesar_estates(itin))
+                estates_dto: list[EstateDTO] = list_estate.estates
+
+                for itin in estates_dto:
+                    list_estates.estates.append(self._procesar_estates(itin))
+                
+                list_estate_entities.append(list_estates)
+
+            return list_estate_entities    
+        else:
+            list_estates.id = dto.id
+            list_estates.createdAt = datetime.now()
+            list_estates.updatedAt = datetime.now()
+
+            estates_dto: list[EstateDTO] = dto.estates
+
+            for itin in estates_dto.estates:
+                list_estates.estates.append(self._procesar_estates(itin))
+
+            return list_estates
             
-        return list_estates

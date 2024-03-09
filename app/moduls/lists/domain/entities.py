@@ -14,17 +14,20 @@ from app.seedwork.domain.entities import Entity, RootAggregation
 
 @dataclass
 class Companies(Entity):
+    _id: str = field(default_factory=str)
     company_name: str = field(default_factory=str)
     location: str = field(default_factory=str)
     typeCompany: str = field(default_factory=str)
 
 @dataclass
-class GeoLocation(Entity):    
+class GeoLocation(Entity): 
+    _id: str = field(default_factory=str)   
     lat: str = field(default_factory=str)
     lon: str = field(default_factory=str)
 
 @dataclass
 class Estate(Entity):    
+    _id: str = field(default_factory=str)
     code: str = field(default_factory=str)
     name: str = field(default_factory=str)
     geo_locations: list[GeoLocation] = field(default_factory=list[GeoLocation])
@@ -35,6 +38,7 @@ class Estate(Entity):
 
 @dataclass
 class List_estates(RootAggregation):
+    _id: str = field(default_factory=str)
     id: str = field(hash=True, default=None)
     estates: list[Estate] = field(default_factory=list)
     created_at: datetime = field(default=datetime.now())

@@ -1,3 +1,4 @@
+from typing import Union
 import uuid
 from app.seedwork.aplication.dto import Mapper as AppMap
 from app.seedwork.domain.repositories import Mapper as RepMap
@@ -13,7 +14,7 @@ class MapeadorEstate(RepMap):
         return [EstateDTO( estate_id=str(item.id), code=item.code, name=item.name, uniquecode = str(uuid.uuid4())) for item in list_estate]
     
     def _procesar_estates_dto(self, list_estate_dto: List_estatesDTO) -> Estate:
-        return [Estate( estate_id=str(item.id), code=item.code, name=item.name) for item in list_estate_dto]
+        return [Estate(id=item.estate_id, code=item.code, name=item.name) for item in list_estate_dto]
 
     def get_type(self) -> type:
         return List_estates.__class__
@@ -36,17 +37,36 @@ class MapeadorEstate(RepMap):
 
         return list_dto
 
-    def dto_to_entity(self, dto: List_estatesDTO) -> List_estates:
+    def dto_to_entity(self, dto: Union[list[List_estatesDTO], List_estatesDTO]) -> Union[list[List_estates], List_estates]:
+        list_estate_entities: list = []
+
         list_estates = List_estates()
         list_estates.estates = list()
         if not dto:
             return list_estates
         
-        list_estates.createdAt = datetime.now()
-        list_estates.updatedAt = datetime.now()
+        if isinstance(dto, List_estates):
+            list_estates.id = dto.id
+            list_estates._id = dto.id
+            list_estates.createdAt = datetime.now()
+            list_estates.updatedAt = datetime.now()
 
-        estates_dto: list[EstateDTO] = dto.estates
+            estates_dto: list[EstateDTO] = dto.estates
 
-        list_estates.estates.extend(self._procesar_estates_dto(estates_dto))
+            list_estates.estates.extend(self._procesar_estates_dto(estates_dto))
+            return list_estates 
+            
+        else:
+             
+            for list_estate in dto:
+                list_estate_entity = List_estates()
+                
+                list_estate_entity.createdAt = datetime.now()
+                list_estate_entity.updatedAt = datetime.now()
 
-        return list_estates
+                estates_dto: list[EstateDTO] = list_estate.estates
+
+                list_estate_entity.estates.extend(self._procesar_estates_dto(estates_dto))
+                list_estate_entities.append(list_estate_entity)
+
+            return list_estate_entities                

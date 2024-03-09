@@ -15,41 +15,44 @@ from ..infrastructure.mappers import MapeadorEstate
 
 class EstateRepositoryPostgres(ListRepository):
 
+    
+
     def __init__(self):
         self._estates_factory: ListFactory = ListFactory()
+        self.error_msg = "Error: "
 
     @property
     def estates_factory(self):
         return self._estates_factory
 
-    def get_by_id(self, entity_id: int) -> List_estates:
-        # TODO
+    def get_by_id(self, entity_id: int) -> List_estates:        
         list_estate_dto = db.session.query(List_estatesDTO).filter_by(id=str(entity_id)).one()
         try:    
             estate_list_entity = self.estates_factory.create_object(list_estate_dto, MapeadorEstate())             
         except Exception as e:
-            print("Error: ", e)
+            print(self.error_msg, e)
+        
         return estate_list_entity
 
     def get_all(self) -> list[List_estates]:
         list_estate_dto = db.session.query(List_estatesDTO).all()
         try:    
-            estate_list_entity = self.estates_factory.create_object(list_estate_dto, MapeadorEstate()) 
-            #[EstateDTO(id=item.id, code=item.code, name=item.name) for item in estate_dto]
+            estate_list_entity = self.estates_factory.create_object(list_estate_dto, MapeadorEstate())             
         except Exception as e:
-            print("Error: ", e)
+            print(self.error_msg, e)
 
         return estate_list_entity
 
     def create(self, entity: List_estates):
-        # TODO
         listesates_dto = self.estates_factory.create_object(entity, MapeadorEstate())         
         db.session.add(listesates_dto)
 
     def update(self, entity_id: int, entity: List_estates):
-        # TODO
         raise NotImplementedError
 
     def delete(self, entity_id: int):
-        # TODO
-        raise NotImplementedError
+        try:
+            listesates_dto = db.session.query(List_estatesDTO).filter_by(id=entity_id.id).one()
+            db.session.delete(listesates_dto)
+        except Exception as e:
+            print(self.error_msg, e)
