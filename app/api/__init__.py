@@ -24,8 +24,10 @@ def comenzar_consumidor():
     #threading.Thread(target=list_consumer.suscribirse_a_eventos).start()
 
 # Suscripción a comandos
-    threading.Thread(target=list_consumer.suscribirse_a_comandos).start()
-    
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_company).start()
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_company).start()
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_audit).start()
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_audit).start()
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)

@@ -7,16 +7,16 @@ class ComandoCrearReservaPayload(Record):
     locations = [{"code": String(), "name": String()}]
     # TODO Cree los records para itinerarios
 
-#     class LocationRecord(Record):
-#     code = String()
-#     name = String()
-
-class CommandCreateCompanyJson(Record):
-     data = String()
-#     locations = Array(LocationRecord) 
 
 class ComandoCrearReserva(Record):
     data = ComandoCrearReservaPayload()
 
+class CommandCreateCompanyJson(Record):
+     data = String()
 class CommandRollbackCreateCompanyJson(Record):
+     data = String()
+
+class CommandCreateAuditJson(Record):
+     data = String()
+class CommandRollbackCreateAuditJson(Record):
      data = String()

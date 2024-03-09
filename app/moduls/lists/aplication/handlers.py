@@ -13,6 +13,16 @@ class HandlerReservaIntegracion(Handler):
     def handle_rollback_compania_creada(evento):
         despachador = Despachador()
         despachador.publicar_comando(evento, 'rollback-create-company')
+    
+    @staticmethod
+    def handle_auditoria_creada(evento):
+        despachador = Despachador()
+        despachador.publicar_comando(evento, 'create-audit')
+
+    @staticmethod
+    def handle_rollback_auditoria_creada(evento):
+        despachador = Despachador()
+        despachador.publicar_comando(evento, 'rollback-create-audit')
 
         
 
