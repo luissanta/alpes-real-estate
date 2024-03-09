@@ -1,3 +1,4 @@
+from app.moduls.locations.aplication.commands.delete_location import DeleteLocation
 import app.seedwork.presentation.apiflask as apiflask
 import json
 from typing import Any, Dict
@@ -83,3 +84,12 @@ def async_create_location():
         return Response('{}', status=201, mimetype=cons_mimetype)
     except DomainException as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)
+    
+@bp.route("/delete-locate/<location_id>", methods=('DELETE',))
+def async_delete_location(location_id: str):
+    try:
+        command = DeleteLocation(location_id)
+        execute_command(command)
+        return Response('{}', status=200, mimetype=cons_mimetype)
+    except DomainException as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)    

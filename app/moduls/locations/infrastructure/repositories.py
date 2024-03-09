@@ -51,5 +51,8 @@ class LocationRepositoryPostgres(ListRepository):
         raise NotImplementedError
 
     def delete(self, entity_id: int):
-        # TODO
-        raise NotImplementedError
+        try:
+            list_location_dto = db.session.query(List_locationsDTO).filter_by(id=entity_id.id).one()
+            db.session.delete(list_location_dto)
+        except Exception as e:
+            print(self.error_msg, e)

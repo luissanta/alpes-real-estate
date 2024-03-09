@@ -55,36 +55,29 @@ class List_estates(RootAggregation):
                 self.add_events(cmd)    
 
             for companies in estate.companies:
-                #cmd.locations.append({"estate_id": estate.id, "code": geo_locations.lat, "name": geo_locations.lon})
-                #self.add_events(cmd)        
                 example_data = str({
+                    "id": str(uuid.uuid4),
                     "name": companies.company_name,
-                    "age": 30,
-                    "address": {
-                    "street": companies.location,
-                    "city": "Anytown"
-                    }
+                    "location": companies.location,
+                    "typeCompany": companies.typeCompany
                 })
                 payload = CommandCreateCompanyJson(
                      data=example_data    
                 )
-                # self.add_events(payload)
-            
-            #cmd.locations.append({"code": estate.code, "name": estate.name})
-            #elf.updatedAt = None #datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
-            #self.add_events(ReservaCreada(id=estate.id,id_reserva=estate.id, id_cliente=estate.code, estado=estate.name, fecha_creacion=datetime.now()))
-        # self.add_events(cmd)
+                self.add_events(payload)
+
+        #Datos Auditoria
         example_data = str({
-            "name": companies.company_name,
-            "age": 30,
-            "address": {
-            "street": companies.location,
-            "city": "Anytown"
-            }
+            "id": str(uuid.uuid4),
+            "code": "code",
+            "score": 95, #float  -- Random de 1 a 100
+            "approved_audit": "code" #bool
         })
         cmd = CommandCreateAuditJson(
             data = example_data
         )
         self.add_events(cmd)
-        
-        
+
+
+    # def delete_location(self, id: str):
+    #     self.add_events(cmd)          
