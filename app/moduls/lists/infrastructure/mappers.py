@@ -14,7 +14,7 @@ class MapeadorEstate(RepMap):
         return [EstateDTO( estate_id=str(uuid.uuid4()), code=item.code, name=item.name, uniquecode = str(uuid.uuid4())) for item in list_estate]
     
     def _procesar_estates_dto(self, list_estate_dto: List_estatesDTO) -> Estate:
-        return [Estate(estate_id=item.estate_id,id=item.estate_id, code=item.code, name=item.name) for item in list_estate_dto]
+        return [Estate(id=item.estate_id, code=item.code, name=item.name) for item in list_estate_dto]
 
     def get_type(self) -> type:
         return List_estates.__class__
