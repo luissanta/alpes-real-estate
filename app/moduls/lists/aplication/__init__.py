@@ -1,6 +1,6 @@
 from pydispatch import dispatcher
 
-from app.moduls.lists.infrastructure.schema.v1.commands import CommandCreateCompanyJson, CommandRollbackCreateCompanyJson
+from app.moduls.lists.infrastructure.schema.v1.commands import CommandCreateAuditJson, CommandCreateCompanyJson, CommandRollbackCreateAuditJson, CommandRollbackCreateCompanyJson
 
 from .handlers import HandlerReservaIntegracion
 
@@ -11,3 +11,5 @@ from .handlers import HandlerReservaIntegracion
 dispatcher.connect(HandlerReservaIntegracion.handle_compania_creada, signal=f'{CommandCreateCompanyJson.__name__}Integracion')
 dispatcher.connect(HandlerReservaIntegracion.handle_rollback_compania_creada, signal=f'{CommandRollbackCreateCompanyJson.__name__}Integracion')
 
+dispatcher.connect(HandlerReservaIntegracion.handle_auditoria_creada, signal=f'{CommandCreateAuditJson.__name__}Integracion')
+dispatcher.connect(HandlerReservaIntegracion.handle_rollback_auditoria_creada, signal=f'{CommandRollbackCreateAuditJson.__name__}Integracion')
