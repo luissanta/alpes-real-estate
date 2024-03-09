@@ -23,7 +23,6 @@ class HandlerReservaIntegracion(Handler):
     def handle_rollback_auditoria_creada(evento):
         despachador = Despachador()
         despachador.publicar_comando(evento, 'rollback-create-audit')
-
         
 
     @staticmethod

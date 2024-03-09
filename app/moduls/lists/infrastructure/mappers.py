@@ -26,7 +26,7 @@ class MapeadorEstate(RepMap):
         if not list_entidad:
             return list_dto
 
-        list_dto.id = str(uuid.uuid4())        
+        list_dto.id = str(uuid.uuid4())
         
         list_dto.createdAt = datetime.now()
         list_dto.updatedAt = datetime.now()

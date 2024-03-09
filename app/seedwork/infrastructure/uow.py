@@ -98,7 +98,6 @@ def flask_uow():
        regist_unit_of_work(uow_serialized)
        return uow_serialized
 
-
 def unit_of_work() -> UnitOfWork:
     if is_flask():
         return pickle.loads(flask_uow())
@@ -111,6 +110,7 @@ def save_unit_of_work(uow: UnitOfWork):
         regist_unit_of_work(pickle.dumps(uow))
     else:
         raise Exception(cons_uow_no_existe)
+
 
 class UnitOfWorkPort:
 

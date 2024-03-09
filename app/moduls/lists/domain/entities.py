@@ -77,7 +77,3 @@ class List_estates(RootAggregation):
             data = example_data
         )
         self.add_events(cmd)
-
-
-    # def delete_location(self, id: str):
-    #     self.add_events(cmd)          
