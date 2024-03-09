@@ -94,22 +94,3 @@ def async_delete_location(location_id: str):
     except DomainException as e:
 
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype=cons_mimetype)    
-
-@bp.route("/location-command", methods=('POST',))
-def async_create_location():
-    try:
-        estate_dict = request.json
-
-        #print("Request.json: ", estate_dict)
-        map_estate = MapApp()
-        estate_dto = map_estate.external_to_dto(estate_dict)
-
-        command = CreateLocation(estate_dto)
-        
-        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
-        # Revise la clase Despachador de la capa de infraestructura
-        execute_command(command)
-        
-        return Response('{}', status=201, mimetype='application/json')
-    except DomainException as e:
-        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
