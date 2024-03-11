@@ -26,7 +26,7 @@ def comenzar_consumidor(app):
 
 # Suscripción a comandos
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_company).start()
-    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_company).start()
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_company, args=[app]).start()
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_audit).start()
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_audit).start()
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_estate).start()

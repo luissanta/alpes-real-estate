@@ -1,4 +1,5 @@
 import json
+from app.moduls.lists.aplication.commands.delete_estate import DeleteEstate
 from app.moduls.sagas.aplicacion.coordinadores.saga_propiedad import oir_mensaje
 import pulsar,_pulsar  
 from pulsar.schema import *
@@ -8,6 +9,7 @@ import logging
 import traceback
 
 from app.moduls.lists.infrastructure.schema.v1.events import CommandResponseCreateAuditJson, CommandResponseCreateCompanyJson, CommandResponseCreateEstateJson, CommandResponseRollbackCreateAuditJson, CommandResponseRollbackCreateCompanyJson, CommandResponseRollbackCreateEstateJson, EventoCustom, EventoReservaCreada
+from app.seedwork.aplication.commands import execute_command
 from app.seedwork.infrastructure import utils
 
 def suscribirse_a_eventos():
@@ -40,6 +42,7 @@ def suscribirse_a_comandos_from_response_company():
             mensaje = consumer.receive()
             oir_mensaje(mensaje.value())
             #print("Evento creacion ejecutado exitosamente id: {}".format(mensaje.data().decode('utf-8')))
+            print("Evento response-create-company ejecutado exitosamente id: {}".format(mensaje.value().data))
             print("Evento creacion ejecutado exitosamente")
             consumer.acknowledge(mensaje)     
             
@@ -51,7 +54,7 @@ def suscribirse_a_comandos_from_response_company():
         if client:
             client.close()
 
-def suscribirse_a_comandos_from_response_rollback_company():
+def suscribirse_a_comandos_from_response_rollback_company(app):
     client = None
     try:
         client = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
@@ -60,9 +63,10 @@ def suscribirse_a_comandos_from_response_rollback_company():
 
         while True:
             mensaje = consumer.receive()
-            oir_mensaje(mensaje.value())
-            print("Evento rollback ejecutado exitosamente id: {}".format(mensaje.value().data))
-            consumer.acknowledge(mensaje)     
+            with app.test_request_context():
+                oir_mensaje(mensaje.value())
+                print("Evento response-rollback-create-company ejecutado exitosamente id: {}".format(mensaje.value().data))
+                consumer.acknowledge(mensaje)     
             
 
     except Exception as e:
@@ -83,7 +87,7 @@ def suscribirse_a_comandos_from_response_audit():
         while True:
             mensaje = consumer.receive()
             oir_mensaje(mensaje.value())
-            print("Evento audit ejecutado exitosamente id: {}".format(mensaje.value().data))
+            print("Evento response-create-audit ejecutado exitosamente id: {}".format(mensaje.value().data))
             consumer.acknowledge(mensaje)     
             
     except Exception as e:
@@ -104,7 +108,7 @@ def suscribirse_a_comandos_from_response_rollback_audit():
         while True:
             mensaje = consumer.receive()            
             oir_mensaje(mensaje.value())
-            print("Evento audit rollback ejecutado exitosamente id: {}".format(mensaje.value().data))
+            print("Evento 'response-rollback-create-audit ejecutado exitosamente id: {}".format(mensaje.value().data))
             consumer.acknowledge(mensaje)     
             
 
@@ -122,16 +126,13 @@ def suscribirse_a_comandos_from_response_create_estate():
         client = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumer = client.subscribe('response-create-estate', consumer_type=pulsar.ConsumerType.Shared,
                                     subscription_name='estate-sub-commands', schema=AvroSchema(CommandResponseCreateEstateJson))#EventoCustom))#CommandResponseCreateEstateJson))
-        
-
-
         while True:
             mensaje = consumer.receive()
+            
             test = CommandResponseCreateEstateJson()
             test.data = "hola"
             oir_mensaje(mensaje.value())
-            print("Evento crear propiedad ejecutado exitosamente id: {}".format(mensaje.value().data))
-            #print("Evento rollback ejecutado exitosamente id: {}".format(mensaje.data().decode('utf-8')))
+            print("Evento response-create-estate ejecutado exitosamente id: {}".format(mensaje.value().data))
             consumer.acknowledge(mensaje)     
             
 
@@ -154,7 +155,7 @@ def suscribirse_a_comandos_from_response_rollback_estate():
             mensaje = consumer.receive()
             oir_mensaje(mensaje.value())
             #oir_mensaje(mensaje)
-            print("Evento rollback ejecutado exitosamente id: {}".format(mensaje.data().decode('utf-8')))
+            print("Evento response-rollback-create-estate ejecutado exitosamente id: {}".format(mensaje.value().data))
             consumer.acknowledge(mensaje)     
             
 
@@ -167,7 +168,7 @@ def suscribirse_a_comandos_from_response_rollback_estate():
             client.close()
 
 
-def suscribirse_a_comandos_delete():
+def suscribirse_a_comandos_delete(app):
     client = None
     try:
         client = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
@@ -176,23 +177,12 @@ def suscribirse_a_comandos_delete():
 
         while True:
             mensaje = consumer.receive()
-            oir_mensaje(mensaje.value())
-            print("Mensaje recibido: {}".format(mensaje.data().decode('utf-8')))
-            # with app.app_context():
-            #     db.create_all()
-            #     print(f"Current app name: {app.name}")
-            #     json_data = json.loads(mensaje.data().decode('utf-8'))
-            #     id_value = json_data.get("id")
-
-            #     db.session.query(Company).filter(Company.id == id_value).delete()
-            #     db.session.commit()
-            #     db.session.close()
-
-                # despachador = Despachador()
-                # command = CommandResponseRollbackCreateCompanyJson()
+            with app.test_request_context():
                 
-                # command.data = id_value               
-                # despachador.publicar_comando(command, 'response-rollback-create-company')
+                oir_mensaje(mensaje.value())
+                command = DeleteEstate(-1)
+                execute_command(command)
+            print("Evento compensation-rollback-create-estate ejecutado exitosamente id: {}".format(mensaje.value().data))
 
             consumer.acknowledge(mensaje)
     except Exception as e:

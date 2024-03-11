@@ -21,19 +21,10 @@ class CommandRollbackCreateEstateJson(Command):
 class CreatedEstateHandler(EmptyClass):
     
     def handle(self, command: CommandRollbackCreateEstateJson):
-        estate_id = "07adc32e-885e-4768-95c2-bc876955f503"
+        estate_id = -1
         command = DeleteEstate(estate_id)
         execute_command(command)
         print("Rollback Create Estate")
-        # estates = command
-        
-        # estate_list: ListDTO = self.list_factories.create_object(estates, MapeadorEstate())
-        # estate_list.create_estate(estate_list)
-        # repository = self.repository_factory.create_object(ListRepository.__class__)
-
-        # UnitOfWorkPort.regist_batch(repository.create, estate_list)
-        # #UnitOfWorkPort.savepoint()
-        # UnitOfWorkPort.commit()
 
 
 @comando.register(CommandRollbackCreateEstateJson)

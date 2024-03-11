@@ -43,11 +43,13 @@ class List_estates(RootAggregation):
     estates: list[Estate] = field(default_factory=list)
     created_at: datetime = field(default=datetime.now())
     updated_at: datetime = field(default=datetime.now())
+    data: str = field(default_factory=str)
        
 
     def create_estate(self, estateslist: List_estates):
         estates = estateslist
         cmd = ComandoCrearReservaPayload()
+        cmd.data  = estateslist.data
         cmd.id = estateslist.id
         for estate in estates.estates:
             for geo_locations in estate.geo_locations:

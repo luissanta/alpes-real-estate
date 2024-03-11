@@ -26,3 +26,4 @@ class EstateDTO(DTO):
 class ListDTO(DTO):
     id: str = field(default_factory=str)
     estates: list[EstateDTO] = field(default_factory=list[EstateDTO])
+    data: str = field(default_factory=str)

@@ -104,8 +104,11 @@ class CoordinadorOrquestacion(CoordinadorSaga, ABC):
         if self.es_ultima_transaccion(index) and not isinstance(evento, paso.error):
             self.terminar(f"Index: {index+1} Fin + IdCorrelation={self.pasos[index].id_correlacion}")
         elif isinstance(evento, paso.error):
-            self.persistir_en_saga_log(f"Index: {index} {self.pasos[index-1].compensacion.__name__} - Compensación IdCorrelation={self.pasos[index-1].id_correlacion}")
-            self.publicar_comando(evento, self.pasos[index-1].compensacion)
+            if index != 1:
+                self.publicar_comando(evento, self.pasos[index-1].compensacion)
+                self.persistir_en_saga_log(f"Index: {index} {self.pasos[index-1].compensacion.__name__} - Compensación IdCorrelation={self.pasos[index-1].id_correlacion}")
+            else:
+                self.persistir_en_saga_log(f"Index: {index} Fin - Compensación IdCorrelation={self.pasos[index].id_correlacion}")
         elif isinstance(evento, paso.evento):
             self.persistir_en_saga_log(f"Index: {index+1} {self.pasos[index+1].comando.__name__} - Comando IdCorrelation={self.pasos[index].id_correlacion}")
             self.publicar_comando(evento, self.pasos[index+1].comando)

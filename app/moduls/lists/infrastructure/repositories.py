@@ -52,7 +52,11 @@ class EstateRepositoryPostgres(ListRepository):
 
     def delete(self, entity_id: int):
         try:
-            listesates_dto = db.session.query(List_estatesDTO).filter_by(id=entity_id.id).one()
+            listesates_dto = None
+            if(entity_id.id == -1):
+                listesates_dto = db.session.query(List_estatesDTO).order_by(List_estatesDTO.id.desc()).first()
+            else:
+                listesates_dto = db.session.query(List_estatesDTO).filter_by(id=entity_id.id).one()
             db.session.delete(listesates_dto)
         except Exception as e:
             print(self.error_msg, e)

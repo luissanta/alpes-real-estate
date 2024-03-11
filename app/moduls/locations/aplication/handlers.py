@@ -62,9 +62,7 @@ class HandlerReservaDominio(Handler):
             execute_command(command)
             despachador = Despachador()
             command = CommandResponseCreateEstateJson()
-            payload = CommandResponseCreateEstateJsonPayload() 
-            payload.data = '{"id": "1", "name": "Estate 1", "code": "E1", "createdAt": "2021-08-01T00:00:00.000Z", "updatedAt": "2021-08-01T00:00:00.000Z"}'
-            command.data = '{"id": "1", "name": "Estate 1", "code": "E1", "createdAt": "2021-08-01T00:00:00.000Z", "updatedAt": "2021-08-01T00:00:00.000Z"}'
+            command.data = evento.data
             #command.data = "Evento procesado correctamente"   
 
             # Example with instance data
