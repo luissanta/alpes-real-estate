@@ -10,13 +10,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     import app.moduls.locations.aplication
+    #import app.moduls.lists.aplication
 
 def importar_modelos_alchemy():
     import app.moduls.lists.infrastructure.dto
     import app.moduls.locations.infrastructure.dto
     
 
-def comenzar_consumidor():
+def comenzar_consumidor(app):
     import app.moduls.lists.infrastructure.consumers as list_consumer   
     import threading
 
@@ -28,7 +29,10 @@ def comenzar_consumidor():
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_company).start()
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_audit).start()
     threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_audit).start()
-
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_rollback_estate).start()
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_from_response_create_estate).start()
+    threading.Thread(target=list_consumer.suscribirse_a_comandos_delete, args=[app]).start()
+#, args=[app]
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
@@ -52,7 +56,10 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         #if not app.config.get('TESTING'):
-        comenzar_consumidor()
+        comenzar_consumidor(app)
+
+        #from app.moduls.sagas.aplicacion.coordinadores.saga_propiedad import CoordinadorReservas
+        #CoordinadorReservas()
 
      # Importa Blueprints
     from . import list_router

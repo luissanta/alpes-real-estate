@@ -26,12 +26,12 @@ class HandlerReservaIntegracion(Handler):
         
 
     @staticmethod
-    def handle_reserva_cancelada(evento):
+    def handle_rollback_Estate_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'rollback-estate')
 
     @staticmethod
-    def handle_reserva_aprobada(evento):
+    def handle_estate_aprobada(evento):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'eventos-reserva')
 
@@ -43,9 +43,9 @@ class HandlerReservaIntegracion(Handler):
 class HandlerReservaDominio(Handler):
 
     @staticmethod
-    def handle_reserva_creada(evento):
+    def handle_created_estate(evento):
         despachador = Despachador()
-        despachador.publicar_comando(evento, 'eventos-reserva-dominio')
+        despachador.publicar_comando(evento, 'sagas-created-estate')
 
     @staticmethod
     def handle_reserva_cancelada(evento):

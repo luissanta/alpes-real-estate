@@ -1,11 +1,11 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-import uuid
-from app.seedwork.domain.events import (DomainEvent)
+from aeroalpes.seedwork.dominio.eventos import (EventoDominio)
 from datetime import datetime
 
-class EventoReserva(DomainEvent):
+class EventoCliente(EventoDominio):
     ...
+
 
 @dataclass
 class ReservaCreada(EventoReserva):
@@ -29,6 +29,4 @@ class ReservaPagada(EventoReserva):
     id_reserva: uuid.UUID = None
     fecha_actualizacion: datetime = None
 
-@dataclass
-class CreatedEstate(EventoReserva):
-    data: str = None
+

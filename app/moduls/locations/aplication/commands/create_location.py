@@ -1,3 +1,5 @@
+from app.moduls.lists.infrastructure.schema.v1.events import CreatedEstate, RollbackCreatedEstate
+from app.moduls.locations.infrastructure.dispachers import Despachador
 from app.seedwork.aplication.commands import Command
 from app.moduls.locations.aplication.dto import ListDTO
 from .base import CreateLocationBaseHandler
@@ -16,15 +18,22 @@ class CreateLocation(Command):
 class CreateEstateHandler(CreateLocationBaseHandler):
     
     def handle(self, command: CreateLocation):
-        locations = command
-        
-        location_list: ListDTO = self.list_factories.create_object(locations, MapeadorLocation())
-        location_list.create_location(location_list)
-        repository = self.repository_factory.create_object(ListRepository.__class__)
+        try: 
+            locations = command
+            
+            location_list: ListDTO = self.list_factories.create_object(locations, MapeadorLocation())
+            location_list.create_location(location_list)
+            repository = self.repository_factory.create_object(ListRepository.__class__)
 
-        UnitOfWorkPort.regist_batch(repository.create, location_list)
-        UnitOfWorkPort.savepoint()
-        UnitOfWorkPort.commit()
+            UnitOfWorkPort.regist_batch(repository.create, location_list)
+            #UnitOfWorkPort.savepoint()
+            UnitOfWorkPort.commit()
+        except Exception as e:
+            despachador = Despachador()
+            command = RollbackCreatedEstate()
+            command.data = "data form location" #TODO MB id_value               
+            despachador.publicar_comando(command, 'response-rollback-create-company')
+
 
 @command.register(CreateLocation)
 def execute_command_create_state(comando: CreateLocation):
