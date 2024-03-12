@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from click import UUID
 
 from app.seedwork.domain.entities import RootAggregation
 from pydispatch import dispatcher
 
 import pickle
 
+
+cons_uow_no_existe = 'No hay unidad de trabajo'
 
 class Lock(Enum):
     OPTIMISTA = 1
@@ -79,25 +80,25 @@ def is_flask():
     try:
         from flask import session
         return True    
-    except Exception as e:
+    except Exception:
         return False
 
 def regist_unit_of_work(serialized_obj):
-    from app.config.uow import unitOfWorkSQLAlchemy
     from flask import session
     session['uow'] = serialized_obj
 
 
 def flask_uow():
     from flask import session
-    from app.config.uow import unitOfWorkSQLAlchemy
+    from app.config.uow import UnitOfWorkSQLAlchemy
     if session.get('uow'):
        return session['uow']
     else:
-       uow_serialized = pickle.dumps(unitOfWorkSQLAlchemy())
+       uow_serialized = pickle.dumps(UnitOfWorkSQLAlchemy())
        regist_unit_of_work(uow_serialized)
        return uow_serialized
 
+<<<<<<< HEAD
 def regist_unit_of_work1(serialized_obj):
     from app.config.uow import unitOfWorkSQLAlchemy
     from flask import session
@@ -113,22 +114,29 @@ def flask_uow1():
        regist_unit_of_work1(uow_serialized)
        return uow_serialized
 
+=======
+>>>>>>> develop
 def unit_of_work() -> UnitOfWork:
     if is_flask():
         return pickle.loads(flask_uow())
     else:
+<<<<<<< HEAD
         raise Exception('No hay unidad de trabajo')
 def unit_of_work1() -> UnitOfWork:
     if is_flask():
         return pickle.loads(flask_uow1())
     else:
         raise Exception('No hay unidad de trabajo')
+=======
+        raise Exception(cons_uow_no_existe)
+>>>>>>> develop
 
 def save_unit_of_work(uow: UnitOfWork):
     regist_unit_of_work(pickle.dumps(uow))
     if is_flask():
         regist_unit_of_work(pickle.dumps(uow))
     else:
+<<<<<<< HEAD
         raise Exception('No hay unidad de trabajo')
 def save_unit_of_work1(uow: UnitOfWork):
     regist_unit_of_work1(pickle.dumps(uow))
@@ -136,6 +144,9 @@ def save_unit_of_work1(uow: UnitOfWork):
         regist_unit_of_work1(pickle.dumps(uow))
     else:
         raise Exception('No hay unidad de trabajo')
+=======
+        raise Exception(cons_uow_no_existe)
+>>>>>>> develop
 
 
 class UnitOfWorkPort:

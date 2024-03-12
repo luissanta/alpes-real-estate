@@ -464,4 +464,11 @@ alembic.ini.production
 alembic.ini.stage
 test_db.db-journal
 *database.db
+<<<<<<< HEAD
 data/
+=======
+data/
+data/bookkeeper/
+data/zookeeper/
+data/ledger/
+>>>>>>> develop

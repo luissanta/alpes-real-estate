@@ -10,7 +10,11 @@ class MapeadorLocation(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
     def _procesar_locations(self, list_location: List_locations) -> LocationDTO:
+<<<<<<< HEAD
         return [LocationDTO(location_id=str(item.id), code=item.code, name=item.name) for item in list_location]
+=======
+        return [LocationDTO(location_id=str(item.id), code=item.code, name=item.name, uniquecode = str(uuid.uuid4())) for item in list_location]
+>>>>>>> develop
     
     def _procesar_locations_dto(self, list_location_dto: List_locationsDTO) -> Location:
         return [Location(location_id=str(item.id), code=item.code, name=item.name) for item in list_location_dto]

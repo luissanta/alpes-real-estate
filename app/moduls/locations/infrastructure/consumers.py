@@ -4,6 +4,10 @@ import uuid
 import time
 import logging
 import traceback
+<<<<<<< HEAD
+=======
+from app.moduls.lists.infrastructure.schema.v1.events import EventoReservaCreada
+>>>>>>> develop
 from app.moduls.locations.aplication.commands.create_location import CreateEstateHandler, CreateLocation
 
 from app.moduls.locations.infrastructure.schema.v1.events import EventoLocationCreada
@@ -16,7 +20,11 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+<<<<<<< HEAD
         consumidor = cliente.subscribe('eventos-reserva-dominio', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoLocationCreada))
+=======
+        consumidor = cliente.subscribe('eventos-reserva-dominio', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoReservaCreada))
+>>>>>>> develop
 
         while True:
             mensaje = consumidor.receive()

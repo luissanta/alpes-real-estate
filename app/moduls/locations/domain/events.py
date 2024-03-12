@@ -27,4 +27,12 @@ class ReservaAprobada(EventoReserva):
 @dataclass
 class ReservaPagada(EventoReserva):
     id_reserva: uuid.UUID = None
+<<<<<<< HEAD
     fecha_actualizacion: datetime = None
+=======
+    fecha_actualizacion: datetime = None
+
+@dataclass
+class CreatedEstate(EventoReserva):
+    data: str = None
+>>>>>>> develop

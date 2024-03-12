@@ -14,14 +14,21 @@ class MapeadorEstateDTOJson(AppMap):
     
     def _procesar_pulsar_estate(self, location:any) -> LocationDTO:
 
+<<<<<<< HEAD
         estate_dto: LocationDTO = LocationDTO( location.id_cliente, location.estado) 
+=======
+        estate_dto: LocationDTO = LocationDTO( location.code, location.name) 
+>>>>>>> develop
         return estate_dto
     
     def external_to_dto(self, externo: dict) -> ListDTO:
 
         list_dto = ListDTO()
 
+<<<<<<< HEAD
         locations: list[LocationDTO] = list()
+=======
+>>>>>>> develop
         for itin in externo.get("locations"):
             list_dto.locations.append(self._procesar_estate(itin))
 
@@ -31,10 +38,26 @@ class MapeadorEstateDTOJson(AppMap):
 
         list_dto = ListDTO()
 
+<<<<<<< HEAD
         locations: list[LocationDTO] = list()
        
         
         list_dto.locations.append(self._procesar_pulsar_estate(externo))
+=======
+        skip_first = True
+
+        for itin in externo.locations:
+            if skip_first:
+                skip_first = False
+                continue
+
+            try:
+                list_dto.locations.append(self._procesar_estate(itin))
+            except Exception as e:
+                print("validate pulsar estate: ", e)
+
+    
+>>>>>>> develop
 
         return list_dto
 
@@ -66,7 +89,16 @@ class MapeadorLocation(RepMap):
 
         estates_dto: list[LocationDTO] = dto.locations
 
+<<<<<<< HEAD
         for itin in estates_dto.locations:
             list_locations.locations.append(self._procesar_locations(itin))
+=======
+        try:
+            for itin in estates_dto.estates:
+                list_locations.locations.append(self._procesar_locations(itin))
+        except Exception:
+            for itin in estates_dto.locations:
+                list_locations.locations.append(self._procesar_locations(itin))
+>>>>>>> develop
             
         return list_locations
