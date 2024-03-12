@@ -38,7 +38,7 @@ class SettingLog:
     DB_PORT: str = os.getenv("DB_PORT", 5432)
     DB_NAME: str = os.getenv("DB_NAME")
     DATABASE_URL = f"{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:" \
-                   f"{DB_PORT}/SAGALOG"
+                   f"{DB_PORT}/sagalog"
 
 
 settingsLog = SettingLog
@@ -57,7 +57,7 @@ class SettingLogApp:
     DB_PORT: str = os.getenv("DB_PORT", 5432)
     DB_NAME: str = os.getenv("DB_NAME")
     DATABASE_URL = f"{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:" \
-                   f"{DB_PORT}/LOGDB"
+                   f"{DB_PORT}/logdb"
 
 
 settingsLogApp = SettingLogApp
