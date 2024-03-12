@@ -12,6 +12,7 @@ from app.moduls.lists.infrastructure.repositories import ListRepository
 @dataclass
 class CreateEstate(Command):
     estates: ListDTO
+    data: str = field(default_factory=str)
 
 class CreateEstateHandler(CreateEstateBaseHandler):
     

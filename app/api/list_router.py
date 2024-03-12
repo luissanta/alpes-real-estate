@@ -52,7 +52,7 @@ def async_create_estate():
         estate_dto = map_estate.external_to_dto(estate_dict)
 
         command = CreateEstate(estate_dto)        
-        
+        command.data = estate_dict
         execute_command(command)
         
         return Response('{}', status=201, mimetype=cons_mimetype)

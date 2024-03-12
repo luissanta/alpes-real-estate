@@ -32,11 +32,10 @@ class MapeadorEstateDTOJson(AppMap):
     
     def external_to_dto(self, externo: dict) -> ListDTO:
 
-        list_dto = ListDTO()
+        list_dto = ListDTO(data=externo)
 
         for itin in externo.get("estates"):
             list_dto.estates.append(self._procesar_estate(itin))
-
         return list_dto
 
     def dto_to_external(self, dto: ListDTO) -> dict:

@@ -1,5 +1,7 @@
 import pickle
+from app.moduls.lists.infrastructure.schema.v1.events import  CommandResponseCreateEstateJson, CommandResponseCreateEstateJsonPayload, CommandResponseRollbackCreateEstateJson, CustomPayload, EventoCustom
 from app.moduls.locations.domain.events import ReservaCreada
+from app.moduls.locations.infrastructure.dispachers import Despachador
 from app.seedwork.aplication.handlers import Handler
 from app.moduls.locations.aplication.mappers import MapeadorEstateDTOJson as MapApp
 from app.moduls.locations.aplication.commands.create_location import CreateEstateHandler, CreateLocation
@@ -44,7 +46,7 @@ class HandlerReservaDominio(Handler):
         #value = schema.Schema.decode_message(evento.value())
 
         try:
-# Crear una instancia de AvroSchema con la clase de registro ComandoCrearReserva
+            # Crear una instancia de AvroSchema con la clase de registro ComandoCrearReserva
            
             print('================ RESERVA CREADA ===========')
          
@@ -58,8 +60,38 @@ class HandlerReservaDominio(Handler):
             # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
             # Revise la clase Despachador de la capa de infraestructura
             execute_command(command)
+            despachador = Despachador()
+            command = CommandResponseCreateEstateJson()
+            command.data = evento.data
+            #command.data = "Evento procesado correctamente"   
+
+            # Example with instance data
+            evento_custom = EventoCustom(
+                id="12345",
+                time=1634567890,
+                ingestion=1634567890,
+                specversion="1.0",
+                type="custom.event",
+                datacontenttype="application/json",
+                service_name="my-service",
+                data=CustomPayload(
+                    id_reserva="reserva-123",
+                    id_cliente="cliente-456",
+                    estado="activo",
+                    fecha_creacion=1634567890
+                )
+            )
+
+            despachador.publicar_comando_avro_response_estate(command, 'response-create-estate')
             return print("Evento procesado correctamente")
         except Exception as e:
+            despachador = Despachador()
+            command = CommandResponseRollbackCreateEstateJson()
+
+            command.data = "Evento Fallido"               
+            despachador.publicar_comando_avro_rollback_response_estate(command, 'response-rollback-create-estate')
+            print(e)
+            print('ERROR: Suscribiendose al tópico de comandos!')
             return print("Evento procesado correctamente", e)
         
     
