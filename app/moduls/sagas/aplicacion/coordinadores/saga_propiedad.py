@@ -5,6 +5,7 @@ from app.moduls.sagas.aplicacion.comandos.create_company import CommandCreateCom
 from app.moduls.sagas.aplicacion.comandos.rollback_create_audit import CommandRollbackCreateAuditJson
 from app.moduls.sagas.aplicacion.comandos.rollback_create_company import CommandRollbackCreateCompanyJson
 from app.moduls.sagas.aplicacion.comandos.rollback_create_state import CommandRollbackCreateEstateJson
+from app.moduls.sagas.aplicacion.coordinadores.log import agregar_mensaje
 from app.seedwork.aplication.commands import Command
 
 from app.seedwork.aplication.sagas import CoordinadorOrquestacion, Transaccion, Inicio, Fin
@@ -35,8 +36,20 @@ class CoordinadorReservas(CoordinadorOrquestacion):
         self.persistir_en_saga_log(mensaje)
 
     def persistir_en_saga_log(self, mensaje):
+        agregar_mensaje(mensaje)
         print("Persistiendo en la base de datos")
         print("======================================================"+mensaje)
+        
+        # TODO Persistir el mensaje en la tabla SagaLog de la base de datos usando SQLAlchemy
+        # Aquí debes escribir el código para guardar el mensaje en la tabla SagaLog
+        # Puedes usar la sintaxis de SQLAlchemy para crear una sesión, una instancia de SagaLog y guardarla en la base de datos
+        # Por ejemplo:
+        # from app.moduls.sagas.infrastructure.models import SagaLog
+        # from app.moduls.sagas.infrastructure.database import session
+        # saga_log = SagaLog(mensaje=mensaje)
+        # session.add(saga_log)
+        # session.commit()
+
         # TODO Persistir estado en DB
         # Probablemente usted podría usar un repositorio para ello
         ...
